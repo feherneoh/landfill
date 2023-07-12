@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+sudo kexec --load /boot/vmlinuz-linux-zen --initrd /boot/initramfs-linux-zen.img --reuse-cmdline

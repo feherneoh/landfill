@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+ISOTMP=$(mktemp -d)
+ISO="http://archmirror.hbit.sztaki.hu/archlinux/iso/latest"
+ISOBOOT="$ISO/arch/boot/x86_64"
+wget "$ISOBOOT/vmlinuz-linux" -O "$ISOTMP/kernel"
+wget "$ISOBOOT/initramfs-linux.img" -O "$ISOTMP/ramdisk"
+sudo kexec --load "$ISOTMP/kernel" --initrd "$ISOTMP/ramdisk" --command-line "archisobasedir=arch archiso_http_srv=$ISO/ cms_verify=y ip=dhcp"
+rm -rf "$ISOTMP"
