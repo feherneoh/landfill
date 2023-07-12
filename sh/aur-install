@@ -1,0 +1,29 @@
+#!/bin/bash
+
+echo "AUR package installer"
+echo "Package to install:" "$1"
+#pause
+mkdir -p ~/AUR
+cd ~/AUR
+if [ -d "$1" ]
+then
+	cd "$1"
+	git pull
+else
+	git clone https://aur.archlinux.org/$1.git > /dev/null
+	if [ $? -ne 0 ]
+	then
+		echo "Clone failed"
+		exit -1
+	fi
+	cd "$1"
+fi
+echo "About to build and install package"
+#pause
+makepkg -sirc
+if [ $? -ne 0 ]
+then
+        echo "Build failed"
+        exit -1
+fi
+
