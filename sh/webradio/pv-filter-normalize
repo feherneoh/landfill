@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+mp3path=$(realpath "$1")
+mp3dir=$(dirname "$mp3path")
+mp3file=$(basename "$mp3path")
+
+mp3orig="$mp3dir/orig/$mp3file"
+mp3temp="$mp3dir/temp/$mp3file"
+mp3log="$mp3dir/log/$mp3file.loudnorm"
+mp3meta="$mp3path.filter"
+
+echo "Normalizing $mp3file"
+
+if [ -f "$mp3path" ]
+then
+
+	mkdir -p "$mp3dir/orig"
+	mkdir -p "$mp3dir/temp"
+	mkdir -p "$mp3dir/log"
+	if [ ! -f "$mp3orig" ]
+	then
+		echo " - Backing original up"
+		cp "$mp3path" "$mp3orig"
+	fi
+	echo " - Processing ..."
+	ffmpeg-normalize "$mp3path" -f -q -pr -nt ebu -c:a libmp3lame -b:a 320K -ar 48000 -o "$mp3temp"
+	echo " - Done"
+	mv "$mp3temp" "$mp3path"
+	echo "pv-filter-normalize" >> "$mp3meta"
+else
+	echo "File not found"
+fi

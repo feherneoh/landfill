@@ -1,0 +1,36 @@
+#!/usr/bin/bash
+
+if [ "$#" -ne 1 ]
+then
+	echo "needs 1 parameter" 1>&2
+	exit -1
+fi
+
+if [ -d "$1" ]
+then
+	STREAMFOLDER="$1"
+elif [ -d ~/"streams/$1" ]
+then
+	STREAMFOLDER=~/"streams/$1"
+else
+	echo "Stream folder not found" 1>&2
+	exit -1
+fi
+
+if [ -f "$STREAMFOLDER/.streaminfo" ]
+then
+	. "$STREAMFOLDER/.streaminfo"
+else
+	echo "Stream metadata missing" 1>&2
+	exit -1
+fi
+
+if [ -z ${STREAMHOST+x} ] || [ -z ${STREAMPORT+x} ] || [ -z ${STREAMPASS+x} ] || [ -z ${STREAMMOUNT+x} ]
+then
+	echo "Incomplete stream info" 1>&2
+	exit -1
+fi
+
+rm -f "$STREAMFOLDER/.streamstop"
+
+pv-stream "$STREAMFOLDER" | oggfwd "$STREAMHOST" "$STREAMPORT" "$STREAMPASS" "$STREAMMOUNT"

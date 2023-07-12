@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+###ffmpeg -i "$1" -ar 44100 -f mp3 - | ffmpeg2theora --no-skeleton --novideo -a 4 -A 192 -o - -
+ffmpeg2theora --no-skeleton --novideo -o - "$1"

@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+
+mp3path=$(realpath "$1")
+mp3dir=$(dirname "$mp3path")
+mp3file=$(basename "$mp3path")
+
+mp3orig="$mp3dir/orig/$mp3file"
+mp3meta="$mp3path.filter"
+
+echo "Resetting filters on $mp3file"
+
+if [ ! -f "$mp3path" ]
+then
+    echo "- File does not exist" >&2
+    exit -1
+fi
+
+if [ ! -f "$mp3orig" ]
+then
+    echo "- Backup does not exist" >&2
+
+    if [ -f "$mp3meta" ]
+    then
+        echo "- File seems to be filtered, but not backed up. Something broke?" >&2
+        exit -2
+    fi
+
+    exit 0
+fi
+
+mv "$mp3orig" "$mp3path"
+rm -f "$mp3meta"
+
+echo "- Done"

@@ -1,0 +1,32 @@
+#!/usr/bin/bash
+
+if [ "$#" -ne 1 ]
+then
+	exit -1
+fi
+
+while :
+do
+	if [ $(ls -1 "$1/" | wc -l) -eq 0 ]
+	then
+		echo "No files to play, sleeping" 1>&2
+		sleep 10
+	fi
+	[ -f "$1/.streamstop" ] && exit 0
+	STREAMFILENAME=$(ls "$1/" | shuf -n 1)
+	STREAMFILE="$1/$STREAMFILENAME"
+	STREAMFILEEXT=${STREAMFILENAME##*\.}
+	if [ "STREAMFILENAME" = "STREAMFILEEXT" ]
+	then
+		echo "skipping file without extension: $STREAMFILENAME" 1>&2
+		continue
+	fi
+	which "pv-oggstream-$STREAMFILEEXT" > /dev/null
+	if [ $? -eq 0 ]
+	then
+		echo "Playing $STREAMFILENAME" 1>&2
+		"pv-oggstream-$STREAMFILEEXT" "$STREAMFILE"
+	else
+		echo "skipping unsupported file: $STREAMFILENAME"
+	fi
+done
