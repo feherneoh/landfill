@@ -1,0 +1,15 @@
+[Unit]
+Description=StableDiffusion webui
+Requires=srv.mount
+After=network.target
+
+[Service]
+Type=exec
+User=stablediffusion
+Group=stablediffusion
+WorkingDirectory=/srv/stablediffusion/stable-diffusion-webui
+ExecStart=/srv/stablediffusion/stable-diffusion-webui/webui.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
