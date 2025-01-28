@@ -1,0 +1,35 @@
+> controller all show
+    + "<name> in Slot <slot> <type> (sn: <serial>)"
+
+> controller <ctrl> show
+    - "<name> in Slot <slot> <type>"
+    + "   <key>: <value>"
+
+> controller <ctrl> enclosure all show
+    - "<name> in Slot <slot> <type>"
+    + "   <intext> Drive Cage at Port <port>, Box <box>, <status>"
+
+> controller <ctrl> enclosure <port>:<box> show
+    - "<name> in Slot <slot> <type>"
+    - "   <intext> Drive Cage at Port <port>, Box <box>, <status>"
+        + "      <key>: <value>"
+    - "   Physical Drives"
+        + "      physicaldrive <port>:<box>:<bay> (port <port>:box <box>:bay <bay>, <interface> <media>, <size>, <status>)"
+
+> controller <ctrl> physicaldrive all show
+    - "<name> in Slot <slot> <type>"
+    + "   Array <letter>"
+        + "      physicaldrive <port>:<box>:<bay> (port <port>:box <box>:bay <bay>, <interface> <media>, <size>, <status>)"
+
+> controller <ctrl> physicaldrive <port>:<box>:<bay> show
+    - "<name> in Slot <slot> <type>"
+    - "   Array <letter>"
+        - "      physicaldrive <port>:<box>:<bay>"
+            + "         <key>: <value>"
+
+> controller <ctrl> logicaldrive all show
+    - "<name> in Slot <slot> <type>"
+    + "   Array <letter>"
+        - "      logicaldrive <ld> (<size>, <raid>, <status>)"
+
+

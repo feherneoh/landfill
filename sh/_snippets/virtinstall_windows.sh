@@ -1,0 +1,15 @@
+virt-install \
+	--connect qemu:///system \
+	--name "VM Name" \
+	--memory memory=8192 \
+	--vcpus sockets=2,cores=2,threads=2 \
+	--cdrom "https://domain/path/to.iso" \
+	--os-variant "win10" \
+	--disk size=128 \
+	--network bridge=br-vm0 \
+	--graphics vnc,port=59000,listen=0.0.0.0 \
+	--controller type=usb,model=qemu-xhci \
+	--input tablet,bus=usb \
+	--input keyboard,bus=usb \
+	--hvm \
+	--noautoconsole
