@@ -1,0 +1,17 @@
+# ignore interface (!!!NOT NIC!!!)
+config dhcp '<interface>'
+    option interface '<interface>'
+    option ignore '1'
+
+# add server for named interface (!!!NOT NIC!!!)
+config dhcp '<interface>' # same as below, unless multiple pools defined for a multi-IP interface
+    option interface '<interface>'
+    option start '<offset>' # how many addresses after network address, assume IP is uint32
+    option limit '<count>' # how many addresses after offset, assume IP is uint32
+    option leasetime '<time>' # 'Xh'
+    # seems to be optional below this
+    option dhcpv4 'server'
+    option dhcpv6 'server'
+    option ra 'server'
+    list ra_flags 'managed-config'
+    list ra_flags 'other-config'

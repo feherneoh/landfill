@@ -1,0 +1,36 @@
+### after done with the changes, `service network reload` and optionally `ifdown/ifup <interface>`
+
+# create bridge
+config device
+    option type 'bridge'
+    option name '<br-name>'
+    list ports '<slave0>'
+    list ports '<slave1>'
+
+# create VLAN-Q
+config device
+    option type '8021q'
+    option ifname '<parent>'
+    option vid '<tag>'
+    option name '<parent>.<tag>'
+
+# create VLAN-AD
+config device
+    option type '8021ad'
+    option ifname '<parent>'
+    option vid '<tag>'
+    option name '<parent>.<tag>'
+
+# create DHCP client interface (like DHCP WAN)
+config interface '<name>'
+    option proto 'dhcp'
+    option device '<nic or bridge>'
+
+# create static IP interface (like LAN) => for DHCP server see `/etc/config/dhcp`
+config interface '<name>'
+    option proto 'static'
+    option device '<nic or bridge>'
+    list ipaddr '<CIDR>'
+    list dns '8.8.8.8'
+    list dns '8.8.4.4'
+    list dns '1.1.1.1'
